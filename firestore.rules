@@ -1,0 +1,16 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to all documents
+    // and write access for the next 30 days
+    match /organization_users/{userId} {
+      allow read, write: if request.time < timestamp.date(2025, 12, 3);
+    }
+
+     match /approval_rules/{ruleId} {
+      // Temporarily allow writes for development
+      allow read, write: if request.time < timestamp.date(2025, 12, 3);
+    }
+  }
+}
